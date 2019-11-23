@@ -22,7 +22,16 @@ jobs:
       - run:
           command: |
             gcloud --quiet auth configure-docker
-            echo "done"
+            
+            docker build -t golang-deploy-gcp .
+
+            TAG=gcr.io/golang-deploy-gcp/golang-deploy-gcp:pushed-‘date +% Y%m%d%H%M%S‘
+            docker tag golang-deploy-gcp $TAG
+            docker push $TAG
+
+            LATEST_TAG=gcr.io/golang-deploy-gcp/golang-deploy-gcp:latest
+            docker tag golang-deploy-gcp $LATEST_TAG
+            docker push $LATEST_TAG
 
 workflows:
   deploy_gcr:
