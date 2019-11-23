@@ -1,0 +1,28 @@
+version: 2.1
+
+orbs:
+  gcp-cli: circleci/gcp-cli@1.8.3
+
+jobs:
+  build:
+    working_directory: /go/src/github.com/manakuro/golang-deploy-gcp
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 18.06.0-ce
+      - gcp-cli/install_and_initialize_cli
+      - run:
+          command: |
+            gcloud --quiet auth configure-docker
+            echo "done"
+
+#        - run:
+#            name: Push docker image
+#            command: |
+#              docker build -t go-web-server .
+#              TAG=gcr.io/pospome-deployflow-project/go-web-server:pushed-‘date +% Y%m%d%H%M%S‘
+#              docker tag go-web-server $TAG
+#              docker push $TAG
+#              LATEST_TAG=gcr.io/pospome-deployflow-project/go-web-server:latest
+#              docker tag go-web-server $LATEST_TAG
+#              docker push $LATEST_TAG
