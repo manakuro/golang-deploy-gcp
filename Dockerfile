@@ -1,4 +1,6 @@
-FROM golang:1.11-alpine
+FROM golang:1.13.3-alpine
+
+ENV GO111MODULE=on
 
 WORKDIR /go/src/golang-deploy-gcp
 COPY . .
